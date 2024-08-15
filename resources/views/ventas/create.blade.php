@@ -95,7 +95,8 @@
                     Documento</label>
                 <input type="text" id="numeracion" name="numeracion"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Número de Documento" disabled/>
+                    placeholder="Número de Documento" required disabled/>
+                <input type="hidden" id="numeracion_data" name="numeracion_data">
             </div>
             <label for="id_tipo" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Producto(s)</label>
             <div>
@@ -136,7 +137,7 @@
     <script>
         document.getElementById('buscar_cliente').addEventListener('click', function() {
         let nro_doc = document.getElementById('nro_doc').value;
-    
+
         fetch(`/api/clientes/${nro_doc}`)
             .then(response => response.json())
             .then(data => {
@@ -145,7 +146,7 @@
                     document.getElementById('cliente_nombre').innerText = `${data.cliente.nombre} ${data.cliente.apellido}`;
                     document.getElementById('cliente_email').innerText = data.cliente.email;
                     document.getElementById('cliente_direccion').innerText = data.cliente.direccion;
-    
+
                     document.getElementById('cliente_info').classList.remove('hidden');
                     document.getElementById('nuevo_cliente').classList.add('hidden');
                 } else {
@@ -163,13 +164,13 @@
             // Limpiar los valores del nuevo producto clonado
             let inputs = newProductItem.querySelectorAll('input');
             inputs.forEach(input => input.value = '');
-            
+
             let selects = newProductItem.querySelectorAll('select');
             selects.forEach(select => select.selectedIndex = 0);
 
             document.getElementById('productos_container').appendChild(newProductItem);
         });
-        
+
         function removeProduct(element) {
             let productItems = document.querySelectorAll('.producto_item');
             if (productItems.length > 1) {
@@ -194,28 +195,49 @@
         document.getElementById('id_tipo').addEventListener('change', function() {
         let id_tipo = this.value;
         let numeracion = '';
-    
+
         if (id_tipo == 1) {
             numeracion = {{ $parametro_1 ? $parametro_1->numeracion : 'null' }};
         } else if (id_tipo == 2) {
             numeracion = {{ $parametro_2 ? $parametro_2->numeracion : 'null' }};
         }
-    
+
         if (numeracion !== 'null') {
             numeracion = parseInt(numeracion, 10);
             if (numeracion < 10) {
-                numeracion='0000' + numeracion; 
-            } else if (numeracion < 100) { 
-                numeracion='000' + numeracion; 
-            } else if (numeracion < 1000) { 
-                numeracion='00' + numeracion; 
-            } else if (numeracion < 10000) { 
-                numeracion='0' + numeracion; 
-            } 
+                numeracion='0000' + numeracion;
+            } else if (numeracion < 100) {
+                numeracion='000' + numeracion;
+            } else if (numeracion < 1000) {
+                numeracion='00' + numeracion;
+            } else if (numeracion < 10000) {
+                numeracion='0' + numeracion;
+            }
             document.getElementById('numeracion').value=numeracion;
+            document.getElementById('numeracion_data').value = numeracion;
         } else {
             document.getElementById('numeracion').value='No disponible';
+            document.getElementById('numeracion_data').value = '';
         }
     });
+    </script>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            let productSelects = document.querySelectorAll('select[name="id_producto[]"]');
+            let selectedProducts = [];
+
+            for (let i = 0; i < productSelects.length; i++) {
+                let selectedValue = productSelects[i].value;
+
+                if (selectedProducts.includes(selectedValue)) {
+                    alert('No puedes seleccionar el mismo producto más de una vez.');
+                    event.preventDefault(); // Evita que el formulario se envíe
+                    return false;
+                } else {
+                    selectedProducts.push(selectedValue);
+                }
+            }
+        });
     </script>
 @stop
