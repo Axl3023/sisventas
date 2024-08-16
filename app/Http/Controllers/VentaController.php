@@ -47,49 +47,61 @@ class VentaController extends Controller
             'apellido' => 'nullable|string|max:80',
             'email' => 'nullable|email|max:100',
             'direccion' => 'nullable|string|max:100',
+            'nombre2' => 'nullable|string|max:80',
+            'apellido2' => 'nullable|string|max:80',
+            'email2' => 'nullable|email|max:100',
+            'direccion2' => 'nullable|string|max:100',
         ]);
 
-        $productos = $request->input('id_producto');
-        if (count($productos) !== count(array_unique($productos))) {
-            return redirect()->back()->with('error', 'No puedes seleccionar el mismo producto más de una vez.');
+        // Buscar cliente por nro_doc o DNI
+        $cliente = Cliente::where('nro_doc', $request->input('nro_doc'))
+        ->orWhere('dni', $request->input('dni1'))
+        ->orWhere('dni', $request->input('dni'))
+        ->first();
+
+        // Si no existe el cliente, lo creamos
+        if (!$cliente) {
+            if ($request->filled('dni1')) {
+                // Crear cliente usando los campos correspondientes al DNI1
+                $cliente = Cliente::create([
+                    'nro_doc' => $request->input('nro_doc'),
+                    'dni' => $request->input('dni1'),
+                    'nombre' => $request->input('nombre'),
+                    'apellido' => $request->input('apellido'),
+                    'email' => $request->input('email'),
+                    'direccion' => $request->input('direccion'),
+                    'estado' => true,
+                ]);
+            } else {
+                // Crear cliente usando los campos correspondientes al DNI2
+                $cliente = Cliente::create([
+                    'dni' => $request->input('dni'),
+                    'nombre' => $request->input('nombre2'),
+                    'apellido' => $request->input('apellido2'),
+                    'email' => $request->input('email2'),
+                    'direccion' => $request->input('direccion2'),
+                    'estado' => true,
+                ]);
+            }
+        } else {
+            // Validar que el cliente no esté inactivo
+            if (!$cliente->estado) {
+                return redirect()->back()->with('error', 'El cliente está inactivo');
+            }
         }
 
-        // Buscar o crear el cliente
-        $cliente = Cliente::where('nro_doc', $request->input('nro_doc'))->first();
-
-        // Validar cliente inactivo
-        if (!$cliente->estado){
-            return redirect()->back()->with('error', 'El cliente está inactivo');
-        }
-
-        // Validar que el cliente exista o que se hayan proporcionado los datos necesarios para crear uno nuevo
-        if (!$cliente && (!$request->filled('nombre') || !$request->filled('apellido') || !$request->filled('email') || !$request->filled('direccion'))) {
-            return redirect()->back()->with('error', 'Debe buscar el cliente o ingresar todos los datos para registrarlo.');
-        }
-
+        // Procesamiento de los productos
         $productos = $request->input('id_producto');
         $cantidades = $request->input('cantidad');
 
-        // Primer bucle: Verificación del stock
+        // Verificación del stock
         foreach ($productos as $index => $productoId) {
             $producto = Producto::find($productoId);
             $cantidad = $cantidades[$index];
 
-            // Verificar el stock
             if ($producto->stock < $cantidad) {
                 return redirect()->back()->with('error', "No hay stock suficiente de {$producto->descripcion}. Stock disponible: {$producto->stock}, Cantidad solicitada: {$cantidad}");
             }
-        }
-
-        if (!$cliente) {
-            // Crear nuevo cliente si no existe
-            $cliente = Cliente::create([
-                'nro_doc' => $request->input('nro_doc'),
-                'nombre' => $request->input('nombre'),
-                'apellido' => $request->input('apellido'),
-                'email' => $request->input('email'),
-                'direccion' => $request->input('direccion'),
-            ]);
         }
 
         // Crear la cabecera de venta
@@ -104,7 +116,7 @@ class VentaController extends Controller
             'estado' => true,
         ]);
 
-        //Obtener parametro y actualizar
+        // Obtener parámetro y actualizar numeración
         $parametro = Parametro::where('id_tipo', $request->input('id_tipo'))->first();
         $nueva_numeracion = (int)$parametro->numeracion + 1;
         $parametro->numeracion = $nueva_numeracion;
@@ -113,13 +125,11 @@ class VentaController extends Controller
         // Calcular el subtotal y crear los detalles de venta
         $total = 0;
 
-        // Segundo bucle: Crear detalles de venta y actualizar el stock
         foreach ($productos as $index => $productoId) {
             $producto = Producto::find($productoId);
             $cantidad = $cantidades[$index];
             $precio = $producto->precio;
 
-            // Calcular el total para este producto
             $total += $precio * $cantidad;
 
             // Crear el detalle de venta
@@ -131,9 +141,7 @@ class VentaController extends Controller
             ]);
 
             // Actualizar el stock del producto
-            $producto->update([
-                'stock' => $producto->stock - $cantidad,
-            ]);
+            $producto->update(['stock' => $producto->stock - $cantidad]);
         }
 
         // Calcular el IGV y el total
@@ -147,7 +155,7 @@ class VentaController extends Controller
             'igv' => $igv,
         ]);
 
-        return redirect()->route('ventas.index')->with('success', 'Registro realizado correctamente');
+        return redirect()->route('ventas.index')->with('success', 'Venta registrada correctamente');
     }
 
     public function edit(string $id)

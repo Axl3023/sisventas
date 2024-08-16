@@ -17,11 +17,11 @@ class DetalleVenta extends Model
 
     public function cabeceraVentas()
     {
-        return $this->hasMany(CabeceraVenta::class, 'id_venta');
+        return $this->belongsTo(CabeceraVenta::class, 'id_venta');
     }
 
     public function productos()
     {
-        return $this->hasMany(Producto::class, 'id_producto');
+        return $this->belongsTo(Producto::class, 'id_producto');
     }
 }

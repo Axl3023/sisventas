@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>SIS</b>VENTAS',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -315,6 +315,11 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
+        [
+            'text' => 'Dashboard',
+            'url' => 'dashboard',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'OPCIONES'],
         [
             'text' => 'REGISTROS',
@@ -365,11 +370,6 @@ return [
                     'route' => 'ventas.index',
                 ]
             ]
-        ],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',

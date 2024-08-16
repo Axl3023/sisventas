@@ -84,10 +84,15 @@
                         {{ $venta->total }}
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-center">
+                        <div class="flex justify-center gap-4">
                             <a href="{{ route('ventas.edit', $venta->id) }}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <button type="button" onclick="confirmDelete('{{ $venta->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button>
+                                class="items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full md:w-auto">Editar</a>
+                            <button type="button" onclick="confirmDelete('{{ $venta->id }}')" class="items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full md:w-auto">Eliminar</button>
+                            <a href="{{ route('exportar', ['id' => $venta->id, 'tipo' => $venta->id_tipo]) }}"
+                                target="_blank"
+                                class="items-center cursor-pointer justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full md:w-auto">
+                                Emitir
+                            </a>
                         </div>
                     </td>
                 </tr>
@@ -147,4 +152,22 @@
                 });
             }
     </script>
+
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @foreach($ventas as $venta)
+                var generateReportButton = document.getElementById('reportButton-{{ $venta->id }}');
+
+                generateReportButton.addEventListener('click', function() {
+                    var tipo = this.getAttribute('data-tipo');
+
+                    if (tipo == 1) {
+                        window.open("{{ route('exportBoleta') }}", '_blank');
+                    } else if (tipo == 2) {
+                        window.open("{{ route('exportFactura') }}", '_blank');
+                    }
+                });
+            @endforeach
+        });
+    </script> --}}
 @stop

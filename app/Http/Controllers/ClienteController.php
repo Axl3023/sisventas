@@ -95,7 +95,7 @@ class ClienteController extends Controller
         return redirect()->route('clientes.index')->with('success', 'Eliminación realizada correctamente');
     }
 
-    public function buscarPorNroDoc($dni)
+    public function buscarPorDni($dni)
     {
         $cliente = Cliente::where('dni', $dni)->first();
 
@@ -104,6 +104,20 @@ class ClienteController extends Controller
                 return response()->json(['exists' => true, 'cliente' => $cliente]);
             }else{
 
+            }
+        } else {
+            return response()->json(['exists' => false]);
+        }
+    }
+
+    public function buscarPorNroDoc($nro_doc)
+    {
+        $cliente = Cliente::where('nro_doc', $nro_doc)->first();
+
+        if ($cliente) {
+            if ($cliente->estado) {
+                return response()->json(['exists' => true, 'cliente' => $cliente]);
+            } else {
             }
         } else {
             return response()->json(['exists' => false]);
