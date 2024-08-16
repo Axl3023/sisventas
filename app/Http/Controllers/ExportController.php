@@ -23,6 +23,7 @@ class ExportController extends Controller
             $pdf = Pdf::loadView('exportar.boleta', [
                 'venta' => $venta,
                 'serie' => $parametro->serie,
+                'detalles' => $detalles
             ]);
         } else if ($tipo == 2) {
             // Es factura
