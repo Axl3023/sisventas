@@ -20,7 +20,7 @@
     @endif
     <div class="lg:mx-20 my-4">
         <h1 class="text-2xl font-bold mb-4">Clientes</h1>
-        <div class="flex justify-between items-center">     
+        <div class="flex justify-between items-center">
             <form action="{{ route('clientes.index') }}" method="GET" class="flex items-center">
                 <input type="text" name="search" class="form-input px-4 py-2 h-full rounded-l-md" placeholder="Buscar cliente"
                     value="{{ request('search') }}">
@@ -49,7 +49,10 @@
                         Apellidos
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Documento
+                        DNI
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        RUC
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Email
@@ -73,6 +76,9 @@
                     </td>
                     <td class="px-6 py-4">
                         {{ $cliente->apellido }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ $cliente->dni }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $cliente->nro_doc }}

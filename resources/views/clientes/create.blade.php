@@ -12,11 +12,31 @@
     <div class="lg:mx-20">
         <form action="{{ route('clientes.store') }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             @csrf
+
+            <!-- Radios para habilitar o deshabilitar el RUC -->
             <div class="mb-4">
-                <label for="nro_doc" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">DNI o RUC</label>
+                <label class="block mb-2 text-md font-medium text-gray-900 dark:text-white">¿Tiene RUC?</label>
+                <div class="flex items-center">
+                    <input type="radio" id="ruc_si" name="tiene_ruc" value="si" class="mr-2" checked>
+                    <label for="ruc_si" class="mr-4 text-md font-medium text-gray-900 dark:text-white">Sí</label>
+
+                    <input type="radio" id="ruc_no" name="tiene_ruc" value="no" class="mr-2">
+                    <label for="ruc_no" class="text-md font-medium text-gray-900 dark:text-white">No</label>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="nro_doc" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">RUC</label>
                 <input type="text" id="nro_doc" name="nro_doc"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Ingrese el DNI o RUC del Cliente" required maxlength="11" pattern="\d*"
+                    placeholder="Ingrese el RUC del Cliente" required maxlength="11" pattern="\d*"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
+            </div>
+            <div class="mb-4">
+                <label for="dni" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">DNI</label>
+                <input type="text" id="dni" name="dni"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Ingrese el DNI del Cliente" required maxlength="8" pattern="\d*"
                     oninput="this.value = this.value.replace(/[^0-9]/g, '');" />
             </div>
             <div class="mb-4">
@@ -59,4 +79,27 @@
 @stop
 
 @section('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rucInput = document.getElementById('nro_doc');
+            const rucSi = document.getElementById('ruc_si');
+            const rucNo = document.getElementById('ruc_no');
+
+            // Deshabilitar o habilitar el campo RUC según la selección inicial
+            toggleRUCInput();
+
+            // Añadir event listeners para los radio buttons
+            rucSi.addEventListener('change', toggleRUCInput);
+            rucNo.addEventListener('change', toggleRUCInput);
+
+            function toggleRUCInput() {
+                if (rucSi.checked) {
+                    rucInput.removeAttribute('disabled');
+                } else if (rucNo.checked) {
+                    rucInput.setAttribute('disabled', true);
+                }
+            }
+        });
+    </script>
+
 @stop

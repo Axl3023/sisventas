@@ -16,14 +16,16 @@ class ClienteSeeder extends Seeder
         DB::table('clientes')->insert([
             [
                 'nro_doc' => '12345678901',
+                'dni' => '76523890',
                 'nombre' => 'Juan',
                 'apellido' => 'Perez',
                 'email' => 'juan.perez@example.com',
                 'direccion' => 'Av. Principal 123',
-                'estado' => true              
+                'estado' => true
             ],
             [
                 'nro_doc' => '23456789012',
+                'dni' => '12355678',
                 'nombre' => 'Maria',
                 'apellido' => 'Garcia',
                 'email' => 'maria.garcia@example.com',
@@ -32,6 +34,7 @@ class ClienteSeeder extends Seeder
             ],
             [
                 'nro_doc' => '34567890123',
+                'dni' => '09876434',
                 'nombre' => 'Carlos',
                 'apellido' => 'Lopez',
                 'email' => 'carlos.lopez@example.com',
@@ -40,6 +43,7 @@ class ClienteSeeder extends Seeder
             ],
             [
                 'nro_doc' => '45678901234',
+                'dni' => '21367653',
                 'nombre' => 'Ana',
                 'apellido' => 'Martinez',
                 'email' => 'ana.martinez@example.com',
@@ -48,6 +52,7 @@ class ClienteSeeder extends Seeder
             ],
             [
                 'nro_doc' => '56789012345',
+                'dni' => '42376876',
                 'nombre' => 'Luis',
                 'apellido' => 'Ramirez',
                 'email' => 'luis.ramirez@example.com',
