@@ -196,8 +196,12 @@ class VentaController extends Controller
             }
         }
 
-        // Actualizar la cabecera de la venta
-        $venta->update($request->only(['nro_doc', 'fecha_venta', 'id_tipo']));
+        // Actualizar la cabecera de la venta (sin modificar el nro_doc)
+        $venta->update([
+            'fecha_venta' => $request->input('fecha_venta'),
+            'id_tipo' => $request->input('id_tipo'),
+            // No actualizar 'nro_doc' aquí
+        ]);
 
         // Eliminar los detalles de venta existentes
         DetalleVenta::where('id_venta', $venta->id)->delete();

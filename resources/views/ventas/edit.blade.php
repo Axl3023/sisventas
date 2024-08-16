@@ -84,21 +84,22 @@
             </div>
             <div class="mb-4">
                 <label for="id_tipo" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Tipo de Documento</label>
-                <select id="id_tipo" name="id_tipo"
+                <select id="id_tipo" name="id_tipo_disabled"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required >
+                    required disabled>
                     <option value="" disabled selected>Seleccione un tipo</option>
                     @foreach($tipos as $tipo)
-                    <option value="{{ $tipo->id }}" {{ $venta->id_tipo == $tipo->id ? 'selected' : ''
-                        }}>{{ $tipo->descripcion }}</option>
+                    <option value="{{ $tipo->id }}" {{ $venta->id_tipo == $tipo->id ? 'selected' : '' }}>{{ $tipo->descripcion }}</option>
                     @endforeach
                 </select>
+                <input type="hidden" name="id_tipo" value="{{ $venta->id_tipo }}">
             </div>
+
             <div class="mb-4">
                 <label for="numeracion" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Número de
                     Documento</label>
                 <input type="text" id="numeracion" name="numeracion"
-
+                    value="{{ old('numeracion', $venta->nro_doc) }}"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Número de Documento" disabled/>
             </div>
