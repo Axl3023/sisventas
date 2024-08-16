@@ -177,17 +177,34 @@ class VentaController extends Controller
             'direccion' => 'nullable|string|max:100',
         ]);
 
+        $productos = $request->input('id_producto');
+        $cantidades = $request->input('cantidad');
+
+        // Validar si hay productos repetidos
+        if (count($productos) !== count(array_unique($productos))) {
+            return redirect()->back()->with('error', 'No puedes seleccionar el mismo producto más de una vez.');
+        }
+
+        // Primer bucle: Verificación del stock
+        foreach ($productos as $index => $productoId) {
+            $producto = Producto::find($productoId);
+            $cantidad = $cantidades[$index];
+
+            // Verificar el stock
+            if ($producto->stock < $cantidad) {
+                return redirect()->back()->with('error', "No hay stock suficiente de {$producto->descripcion}. Stock disponible: {$producto->stock}, Cantidad solicitada: {$cantidad}");
+            }
+        }
+
         // Actualizar la cabecera de la venta
         $venta->update($request->only(['nro_doc', 'fecha_venta', 'id_tipo']));
 
         // Eliminar los detalles de venta existentes
         DetalleVenta::where('id_venta', $venta->id)->delete();
 
-        $productos = $request->input('id_producto');
-        $cantidades = $request->input('cantidad');
         $total = 0;
 
-        // Agregar los nuevos detalles de venta
+        // Segundo bucle: Crear detalles de venta y actualizar el stock
         foreach ($productos as $index => $productoId) {
             $producto = Producto::find($productoId);
             $cantidad = $cantidades[$index];
