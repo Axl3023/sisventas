@@ -9,6 +9,7 @@ class VentasRestController extends Controller
 {
     public function index(){
         $ventasPorFecha = DB::table('cabecera_ventas')
+        ->where('estado',1)
         ->select(
             DB::raw('DATE(fecha_venta) as fecha_venta'),
             DB::raw('SUM(total) as total_ventas')
