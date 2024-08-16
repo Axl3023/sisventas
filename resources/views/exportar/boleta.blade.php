@@ -22,7 +22,7 @@
         .header {
             font-weight: bold;
             text-align: center;
-            background-color: #089292; /* Color de fondo */
+            background-color: #140b9c; /* Color de fondo */
             color: white;
         }
 

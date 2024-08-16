@@ -37,7 +37,7 @@
 @section('content')
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg lg:mx-20">
         <table class="w-full text-md text-center text-gray-500 dark:text-gray-400">
-            <thead class="text-md text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-md text-gray-700 uppercase bg-blue-200 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         ID
@@ -60,10 +60,10 @@
                         {{ $unidad->descripcion }}
                     </td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-center">
+                        <div class="flex justify-center gap-4">
                             <a href="{{ route('unidades.edit', $unidad->id) }}"
-                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                            <button type="button" onclick="confirmDelete('{{ $unidad->id }}')" class="font-medium text-red-600 dark:text-red-500 hover:underline ml-4">Eliminar</button>
+                                class="items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full md:w-auto">Editar</a>
+                            <button type="button" onclick="confirmDelete('{{ $unidad->id }}')" class="items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-full md:w-auto">Eliminar</button>
                         </div>
                     </td>
                 </tr>
