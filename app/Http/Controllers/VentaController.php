@@ -37,31 +37,27 @@ class VentaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nro_doc' => 'required|string',
-            'fecha_venta' => 'required|date_format:Y-m-d\TH:i',
-            'id_tipo' => 'required|exists:tipo_documentos,id',
-            'id_producto.*' => 'required|exists:productos,id',
-            'cantidad.*' => 'required|integer|min:1',
-            'nombre' => 'nullable|string|max:80',
-            'apellido' => 'nullable|string|max:80',
-            'email' => 'nullable|email|max:100',
-            'direccion' => 'nullable|string|max:100',
-            'nombre2' => 'nullable|string|max:80',
-            'apellido2' => 'nullable|string|max:80',
-            'email2' => 'nullable|email|max:100',
-            'direccion2' => 'nullable|string|max:100',
-        ]);
 
         // Buscar cliente por nro_doc o DNI
-        $cliente = Cliente::where('nro_doc', $request->input('nro_doc'))
-        ->orWhere('dni', $request->input('dni1'))
-        ->orWhere('dni', $request->input('dni'))
-        ->first();
+        $cliente = Cliente::where('dni', $request->input('dni'))
+            ->orWhere('nro_doc', $request->input('nro_doc'))
+            ->first();
 
         // Si no existe el cliente, lo creamos
         if (!$cliente) {
             if ($request->filled('dni1')) {
+                $request->validate([
+                    'nro_doc' => 'required|string',
+                    'dni1' => 'required|string',
+                    'fecha_venta' => 'required|date_format:Y-m-d\TH:i',
+                    'id_tipo' => 'required|exists:tipo_documentos,id',
+                    'id_producto.*' => 'required|exists:productos,id',
+                    'cantidad.*' => 'required|integer|min:1',
+                    'nombre' => 'required|string|max:80',
+                    'apellido' => 'required|string|max:80',
+                    'email' => 'required|email|max:100',
+                    'direccion' => 'required|string|max:100',
+                ]);
                 // Crear cliente usando los campos correspondientes al DNI1
                 $cliente = Cliente::create([
                     'nro_doc' => $request->input('nro_doc'),
@@ -73,6 +69,17 @@ class VentaController extends Controller
                     'estado' => true,
                 ]);
             } else {
+                $request->validate([
+                    'dni' => 'required|string',
+                    'fecha_venta' => 'required|date_format:Y-m-d\TH:i',
+                    'id_tipo' => 'required|exists:tipo_documentos,id',
+                    'id_producto.*' => 'required|exists:productos,id',
+                    'cantidad.*' => 'required|integer|min:1',
+                    'nombre2' => 'required|string|max:80',
+                    'apellido2' => 'required|string|max:80',
+                    'email2' => 'required|email|max:100',
+                    'direccion2' => 'required|string|max:100',
+                ]);
                 // Crear cliente usando los campos correspondientes al DNI2
                 $cliente = Cliente::create([
                     'dni' => $request->input('dni'),
@@ -84,6 +91,14 @@ class VentaController extends Controller
                 ]);
             }
         } else {
+            $request->validate([
+                'nro_doc' => 'nullable|string',
+                'dni' => 'nullable|string',
+                'fecha_venta' => 'required|date_format:Y-m-d\TH:i',
+                'id_tipo' => 'required|exists:tipo_documentos,id',
+                'id_producto.*' => 'required|exists:productos,id',
+                'cantidad.*' => 'required|integer|min:1',
+            ]);
             // Validar que el cliente no esté inactivo
             if (!$cliente->estado) {
                 return redirect()->back()->with('error', 'El cliente está inactivo');

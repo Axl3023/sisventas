@@ -87,11 +87,12 @@
                     <p id="cliente_direccion" class="text-md text-gray-700 dark:text-gray-300"></p>
                 </div>
             </div>
+
             <!-- Para RUC -->
             <div id="nuevo_cliente" class="hidden mb-4">
                 <label for="dni1" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">DNI</label>
                 <input type="text" id="dni1" name="dni1"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    class="mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="DNI del Cliente" maxlength="8" pattern="\d*"
                     oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
                 <label for="nombre" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Nombre</label>
@@ -114,11 +115,6 @@
 
             <!-- Para DNI -->
             <div id="nuevo_cliente2" class="hidden mb-4">
-                <label for="dni" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">DNI</label>
-                <input type="text" id="dni" name="dni"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="DNI del Cliente" maxlength="8" pattern="\d*"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
                 <label for="nombre2" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">Nombre</label>
                 <input type="text" id="nombre2" name="nombre2"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
