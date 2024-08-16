@@ -38,7 +38,7 @@
                 <div class="text-4xl font-bold">{{ $cantidadClientes }}</div>
                 <div class="text-lg">Clientes</div>
             </div>
-            <a href="">
+            <a href="{{route('clientes.index')}}">
                 <div class="bg-yellow-600 p-3 text-center cursor-pointer hover:bg-yellow-700">
                     <span class="text-white">Más Información</span>
                 </div>
@@ -50,7 +50,7 @@
                 <div class="text-4xl font-bold">{{ $cantidadVentas }}</div>
                 <div class="text-lg">Ventas</div>
             </div>
-            <a href="">
+            <a href="{{route('ventas.index')}}">
                 <div class="bg-teal-600 p-3 text-center cursor-pointer hover:bg-teal-700">
                     <span class="text-white">Más Información</span>
                 </div>
