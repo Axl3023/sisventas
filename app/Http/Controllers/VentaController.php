@@ -270,9 +270,24 @@ class VentaController extends Controller
 
     public function destroy(string $id)
     {
+        // Buscar la venta por ID
         $venta = CabeceraVenta::findOrFail($id);
+
+        // Obtener los detalles de la venta
+        $detalles = DetalleVenta::where('id_venta', $id)->get();
+
+        // Restaurar el stock de cada producto
+        foreach ($detalles as $detalle) {
+            $producto = Producto::findOrFail($detalle->id_producto);
+            $producto->stock += $detalle->cantidad;
+            $producto->save();
+        }
+
+        // Cambiar el estado de la venta a '0' para indicar que está cancelada
         $venta->estado = '0';
         $venta->save();
+
         return redirect()->route('ventas.index')->with('success', 'Eliminación realizada correctamente');
     }
+
 }
