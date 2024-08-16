@@ -31,15 +31,10 @@
             <div class="mb-4">
                 <label for="nro_doc" class="block mb-2 text-md font-medium text-gray-900 dark:text-white">DNI o RUC del
                     Cliente</label>
-                <div class="flex">
-                    <input type="text" id="nro_doc" name="nro_doc"
-                    value="{{ old('nro_doc', $venta->cliente->nro_doc) }}"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="DNI o RUC del Cliente" required maxlength="11" pattern="\d*"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"/>
-                    <button type="button" id="buscar_cliente"
-                        class="ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-md px-4 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buscar</button>
-                </div>
+                <input type="text" id="nro_doc" name="nro_doc" value="{{ old('nro_doc', $venta->cliente->nro_doc) }}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="DNI o RUC del Cliente" required maxlength="11" pattern="\d*"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly />
             </div>
             <div id="cliente_info" class="hidden mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md">
                 <input type="hidden" id="id_cliente" name="id_cliente" />
@@ -217,28 +212,6 @@
                 updateProductOptions(); // Actualizar opciones después de eliminar un producto
             }
         }
-
-        document.getElementById('buscar_cliente').addEventListener('click', function() {
-            let nro_doc = document.getElementById('nro_doc').value;
-
-            fetch(`/api/clientes/${nro_doc}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        document.getElementById('id_cliente').value = data.cliente.id;
-                        document.getElementById('cliente_nombre').innerText = `${data.cliente.nombre} ${data.cliente.apellido}`;
-                        document.getElementById('cliente_email').innerText = data.cliente.email;
-                        document.getElementById('cliente_direccion').innerText = data.cliente.direccion;
-
-                        document.getElementById('cliente_info').classList.remove('hidden');
-                        document.getElementById('nuevo_cliente').classList.add('hidden');
-                    } else {
-                        document.getElementById('cliente_info').classList.add('hidden');
-                        document.getElementById('nuevo_cliente').classList.remove('hidden');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
 
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
